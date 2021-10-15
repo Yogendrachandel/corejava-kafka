@@ -1,0 +1,75 @@
+1) first start zookeeper.
+cmd:
+<kafkafolder_location> zookeeper-server-start.bat config\zookeeper.properties
+
+
+2) Run kafka :
+
+cmd:
+<kafkafolder_location> kafka-server-start.bat config\server.properties
+
+
+#################################################################KAFKA COMMANDS#################################################
+
+OPen third command prompt.
+
+1) Create Topics:
+
+kafka-topics.bat --zookeeper localhost:2181 --topic <topic_name> --create --partitions <value> --replication-factor <value>
+
+eg: kafka-topics.bat --zookeeper localhost:2181 --topic first-topic --create --partitions 2 --replication-factor 1
+
+Note : 1)replication-factor value can't greater than numbers of total brokers.
+       2)Partiotion values defines that how much partition is created for this Topic.
+	   3)replication-factor values told that how many duplicate copies of messages stored with in the Broker.
+
+2) to view all the topic list.
+
+kafka-topics.bat --zookeeper localhost:2181 --list
+
+
+3)To describe a particular topic .
+
+kafka-topics.bat --zookeeper localhost:2181 --topic <topicName> --describe
+
+4) to Delete the particular topic
+kafka-topics.bat --zookeeper localhost:2181 --topic <topicName> --delete
+
+
+
+5) Sending data to Kafka Topics
+Create Kafka Console Producer(Without-Key) -- In order to send data to the Kafka topic, a producer is required.
+ The role of the producer is to send or write data/messages to the Kafka topics.
+ 
+ command:
+ kafka-console-producer --broker-list localhost:9092 --topic <topic_name>
+ then Press enter.
+ 
+ 
+ WIth Key:
+ kafka-console-producer.bat --broker-list localhost:9092 --topic <topic_name> "key.separator=-" --property "parse.key=true"
+
+ 
+ 
+ 
+ 6)Create kafka console-consumer(Without-Key):
+ kafka-console-consumer --bootstrap-server localhost:9092 --topic <topic_name>
+  then  Press enter.
+  
+  Note :- 1)this console-consumer command read the   messages  from the time  particular console-consumer created .but if we have sent messgae by console-producer
+  without creating the console-consumer then it will leave all the messages before created consumer this one. for this purpose to read all the messgaes below is the command.
+ 
+    2) without creating key in producer and consumer side messgaes will not in mentain  ordering in which thay are created .
+	
+   kafka-console-consumer --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
+  
+  
+ With Key:
+ kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test-topic --from-beginning -property "key.separator= - " --property "print.key=true"
+
+With Consumer Group: kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic <tpoicName> --group <group-name>
+
+
+
+
+For more :https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
